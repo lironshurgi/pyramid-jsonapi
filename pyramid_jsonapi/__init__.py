@@ -1837,8 +1837,8 @@ class CollectionViewBase:
             else:
                 k = x.key
             q = q.distinct(str(k))
-            q = q.order_by(str(x))
-        q = q.order_by(unique_clause)
+            q = q.order_by(sqlalchemy.text(x))
+        q = q.order_by(sqlalchemy.text(unique_clause))
         q = q.distinct(unique_clause)
 
         if 'offset' in qinfo['_page']:
