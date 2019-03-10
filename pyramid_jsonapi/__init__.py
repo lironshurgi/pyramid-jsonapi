@@ -1828,7 +1828,7 @@ class CollectionViewBase:
             qs.append(op_func(op_val))
 
         q = q.filter(or_(*qs))
-        unique_clause = sqlalchemy.aliased(sqlalchemy.inspect(self.model)).primary_key[0]
+        unique_clause = sqlalchemy.inspect(self.model).primary_key[0]
         org_ord = [x for x in q._order_by if str(x) != str(unique_clause)]
         q = q.order_by(None)
         for x in org_ord:
