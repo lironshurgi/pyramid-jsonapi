@@ -36,7 +36,7 @@ from sqlalchemy.orm import load_only
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm.relationships import RelationshipProperty
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
+from sqlalchemy.orm import DeclarativeMeta
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import subqueryload
 from sqlalchemy import inspect, or_
