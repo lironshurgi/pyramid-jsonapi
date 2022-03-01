@@ -1763,7 +1763,7 @@ class CollectionViewBase:
                 # If order_att is a relationship then we need to add a join to
                 # the query and order_by the sort_keys[1] column of the
                 # relationship's target. The default target column is 'id'.
-                if order_att not in [mapper.class_ for mapper in q._join_entities]:
+                if order_att not in [mapper.class_ for mapper in q._compile_state()._join_entities]:
                     q = q.join(order_att)
                 rel = order_att.property
                 try:
@@ -1818,7 +1818,7 @@ class CollectionViewBase:
         qs = []
         joins = set([(x.mapper.class_, x.property.primaryjoin) for x in rel])
         for j in joins:  
-            if j[0] not in [mapper.class_ for mapper in q._join_entities]:
+            if j[0] not in [mapper.class_ for mapper in q._compile_state()._join_entities]:
                 q = q.join(j[0])
             q = q.filter(j[1])
 
@@ -1829,7 +1829,7 @@ class CollectionViewBase:
 
         q = q.filter(or_(*qs))
         unique_clause = sqlalchemy.inspect(self.model).primary_key[0]
-        org_ord = [x for x in q._order_by if str(x) != str(unique_clause)]
+        org_ord = [x for x in q.order_by() if str(x) != str(unique_clause)]
         q = q.order_by(None)
         for x in org_ord:
             if 'element' in x.__dict__:
