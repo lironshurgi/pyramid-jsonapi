@@ -1829,14 +1829,10 @@ class CollectionViewBase:
 
         q = q.filter(or_(*qs))
         unique_clause = sqlalchemy.inspect(self.model).primary_key[0]
-        org_ord = [x for x in q.order_by() if str(x) != str(unique_clause)]
+        org_ord = [x for x in q._compile_state().primary_columns if str(x) != str(unique_clause)]
         q = q.order_by(None)
         for x in org_ord:
-            if 'element' in x.__dict__:
-                k = x.element
-            else:
-                k = x.key
-            q = q.distinct(str(k))
+            q = q.distinct(x)
             q = q.order_by(x)
         q = q.order_by(unique_clause)
         q = q.distinct(unique_clause)
